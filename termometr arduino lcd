@@ -1,0 +1,40 @@
+#include <ShiftLCD.h>
+
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+// Data wire is plugged into pin 7 on the Arduino
+#define ONE_WIRE_BUS 7
+
+// Setup a oneWire instance to communicate with ANY OneWire devices 
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Set oneWire reference to Dallas Temperature sensor. 
+DallasTemperature sensors(&oneWire);
+ShiftLCD lcd(2, 4, 3);
+void setup(void)
+{
+Serial.begin(9600);
+sensors.begin();
+lcd.begin(16, 2);
+
+}
+void loop(void)
+{
+sensors.requestTemperatures();
+Serial.println("");
+delay(500);
+lcd.setCursor(1, 0);
+lcd.print("Sensor 1: ");
+lcd.setCursor(3, 1);
+lcd.println(sensors.getTempCByIndex(0));
+delay (3000);
+lcd.setCursor(1, 0);
+lcd.print("Sensor 2: ");
+lcd.setCursor(3, 1);
+lcd.print (sensors.getTempCByIndex(1));
+delay (3000);
+lcd.clear ();
+delay (2000); 
+
+}
